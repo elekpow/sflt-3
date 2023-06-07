@@ -63,7 +63,16 @@
 ### Выполнения задания 2
 
 
+#!/bin/bash
+source='/home/user1/'
+dest='/tmp/backup/'
+rsync -avc --delete --progress --exclude '.*'  $source $dest
 
+
+```
+crontab -e
+0 20 * * * /home/sync.sh
+```
 
 
 ----
