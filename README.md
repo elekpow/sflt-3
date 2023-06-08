@@ -74,6 +74,9 @@ crontab -e
 0 20 * * * /home/sync.sh
 ```
 
+rsync -avc --delete --exclude '.*' /home/user1/ /tmp/backup/  2>&1 |  head -2 | tail +2
+
+
 
 ----
 
