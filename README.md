@@ -47,8 +47,6 @@
 ![homedir.JPG](https://github.com/elekpow/sflt-3/blob/main/sflt-3/homedir.JPG)
 
 
-
-
 ----
 
 ### Задание 2
@@ -63,20 +61,51 @@
 ### Выполнения задания 2
 
 
-#!/bin/bash
-source='/home/user1/'
-dest='/tmp/backup/'
-rsync -avc --delete --progress --exclude '.*'  $source $dest
+Резервное копирование домашней директории 
 
+```
+rsync -avc --delete --exclude '.*' /home/user1/ /tmp/backup/
+
+```
+
+создаем скрипт /home/sync.sh и выполняем по расписанию каждый день 
+
+Настройка crontab
 
 ```
 crontab -e
-0 20 * * * /home/sync.sh
+
+0 * 1-31 * * /home/sync.sh
+
 ```
 
-rsync -avc --delete --exclude '.*' /home/user1/ /tmp/backup/  2>&1 |  head -2 | tail +2
+Скрипт проверяет вывод rsync, и выводи информацию в системный log
 
+```
+#!/bin/bash
 
+source=$(pwd)/
+dest='/tmp/backup/'
+
+rsync_sending=$(rsync -avc --delete --exclude '.*' $source $dest  2>&1 | sed  '/^#\|^$\| *#/d' | awk 'NR==1 {print $1}')
+
+if [ -d "$dest" ]; then
+        if [ $rsync_sending == "sending" ] ; then
+                logger "backup created Successfully";
+        else
+                logger "backup no create";
+        fi
+else
+        logger "backup dir not found";
+fi
+
+```
+
+![rsync.JPG](https://github.com/elekpow/sflt-3/blob/main/sflt-3/syslog.JPG)
+
+Результат выполения
+
+![rsync.JPG](https://github.com/elekpow/sflt-3/blob/main/sflt-3/backup.JPG)
 
 ----
 
