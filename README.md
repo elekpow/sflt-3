@@ -154,16 +154,6 @@ rsync --bwlimit=128 -avz -e "ssh" --progress /home/user1/Downloads/ admin@158.16
 
 ![rsync_load.JPG](https://github.com/elekpow/sflt-3/blob/main/sflt-3/rsync_load_1.JPG)
 
-
-Для тестирвания можно попробовать использовать Trickle – инструмент для управления пропускной способностью сети
-
-```
-trickle -s -u 128 rsync  -avz --delete --exclude '.*' -e "ssh" $HOME/ admin@158.160.46.131:/tmp/backup
-
-```
-
-параметр u -upload , огрничен до 128 KB/s = 1 Мбит/c
-
 ----
 
 ### Задание 4*
