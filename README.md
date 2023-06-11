@@ -137,7 +137,7 @@ dd if=/dev/zero of=test_1_file_1G bs=1G count=1 #файл 1 гигабайт
 
 
 ```
-rsync --bwlimit=1000 -avz -e "ssh" --progress /home/user1/Downloads/  admin@158.160.106.85:/tmp/backup
+rsync --bwlimit=1000 -avz -e "ssh" --progress /home/user1/Downloads/ admin@158.160.46.131:/tmp/backup
 
 ```
 скорость ограничена до 1002.43kB/s (1Мбайт)
@@ -148,43 +148,21 @@ rsync --bwlimit=1000 -avz -e "ssh" --progress /home/user1/Downloads/  admin@158.
 что бы ограничить пропускную способность rsync до 1 Мбит/c, переведем значение в биты  --bwlimit=128
 
 ```
-rsync --bwlimit=128 -avz -e "ssh" --progress /home/user1/Downloads/  admin@158.160.106.85:/tmp/backup
+rsync --bwlimit=128 -avz -e "ssh" --progress /home/user1/Downloads/ admin@158.160.46.131:/tmp/backup
 
 ```
 
 ![rsync_load.JPG](https://github.com/elekpow/sflt-3/blob/main/sflt-3/rsync_load_1.JPG)
 
 
-
-
-
-
-однако при передачи данных замечено что изначально файлы передаются с не ограниченной скоростью, возможно,что другие процессы на компьютере используют всю доступную пропускную способность сети, что не позволяет ограничить скорость rsync
-
-Для тестирвания можно попробовать использовать Trickle – инструмент для управления пропускной способностью сети.
+Для тестирвания можно попробовать использовать Trickle – инструмент для управления пропускной способностью сети
 
 ```
-trickle -s -d 128 -u 128 -t 128 -l 100 rsync --bwlimit=128 -avz --delete --exclude '.*' -e "ssh" $HOME/ admin@158.160.106.85:/tmp/backup
+trickle -s -u 128 rsync  -avz --delete --exclude '.*' -e "ssh" $HOME/ admin@158.160.46.131:/tmp/backup
 
 ```
 
-Параметр -d указывает скорость загрузки в КБ/с
-
-
-
-
-trickle -s -d 128 -u 128 -t 128 -l 100 rsync --bwlimit=128 -avz --delete --exclude '.*'-P --stats  -e "ssh" --append-verify $HOME/  admin@158.160.106.85:/tmp/backup/
-
-Key12@Ssh
-
-
-trickle -d 500 rsync -a --verbose --partial -e 'ssh -p 2200 -i /share/ssh/id_dsa' admin@10.0.3.10:/share/MD0_DATA/ /share/LocalData
-
---
-
-trickle -s -u 125 rsync -avz --delete --exclude '.*' -e 'ssh' $HOME/ admin@158.160.106.85:/tmp/backup
-
-
+параметр u -upload , огрничен до 128 KB/s = 1 Мбит/c
 
 ----
 
