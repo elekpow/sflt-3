@@ -131,8 +131,9 @@ dd if=/dev/zero of=test_1_file_1G bs=1G count=1 #файл 1 гигабайт
 
 ![dir1.JPG](https://github.com/elekpow/sflt-3/blob/main/sflt-3/dir1.JPG)
 
+Скорость передачи без ограничений
 
-rsync_load_1
+![rsync_load.JPG](https://github.com/elekpow/sflt-3/blob/main/sflt-3/rsync_load_2.JPG)
 
 
 ```
@@ -143,12 +144,15 @@ rsync --bwlimit=1000 -avz -e "ssh" --progress /home/user1/Downloads/  admin@158.
 
 ![rsync_load.JPG](https://github.com/elekpow/sflt-3/blob/main/sflt-3/rsync_load.JPG)
 
+
 что бы ограничить пропускную способность rsync до 1 Мбит/c, переведем значение в биты  --bwlimit=128
 
+```
+rsync --bwlimit=128 -avz -e "ssh" --progress /home/user1/Downloads/  admin@158.160.106.85:/tmp/backup
+
+```
+
 ![rsync_load.JPG](https://github.com/elekpow/sflt-3/blob/main/sflt-3/rsync_load_1.JPG)
-
-
-
 
 
 
